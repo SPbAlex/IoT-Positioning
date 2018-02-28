@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
+from trilateration import trelaterate
 
 from qsstats import QuerySetStats
 
@@ -34,7 +35,18 @@ def vote(request):
     if request.method == 'POST':
         print(request.POST['data'])
 
-
-
+    # Beacons table
+    with open('data', 'w') as f:
+        f.write(trelaterate(3,4,5))
 
     return HttpResponse(status=201)
+
+@csrf_exempt
+def coords(request):
+    s=''
+    if request.method == 'GET':
+        # Beacons table
+        with open('data', 'r') as f:
+            s = f.readline()
+
+    return HttpResponse(s, content_type="text/plain", status=201)
