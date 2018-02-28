@@ -14,8 +14,6 @@ class UnitPageView(TemplateView):
     model = Unit
     template_name = 'unit.html'
 
-    from qsstats import QuerySetStats
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['data'] = Unit.objects.all()
@@ -35,4 +33,8 @@ def vote(request):
     print('Hello')
     if request.method == 'POST':
         print(request.POST['data'])
+
+
+
+
     return HttpResponse(status=201)
