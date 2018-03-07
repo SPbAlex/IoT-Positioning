@@ -1,27 +1,3 @@
-//#ifndef WIDGET_H
-//#define WIDGET_H
-
-//#include <QWidget>
-
-//namespace Ui {
-//class Widget;
-//}
-
-//class Widget : public QWidget
-//{
-//    Q_OBJECT
-
-//public:
-//    explicit Widget(QWidget *parent = 0);
-//    ~Widget();
-
-//private:
-//    Ui::Widget *ui;
-//};
-
-//#endif // WIDGET_H
-
-
 #ifndef WIDGET_H
 #define WIDGET_H
 
@@ -32,6 +8,9 @@
 #include <circle.h>
 
 #include <vector>
+
+#include <QNetworkRequest>
+#include <QNetworkReply>
 
 using std::vector;
 namespace Ui {
@@ -47,12 +26,16 @@ public:
     ~Widget();
 public slots:
     void updateCoordinates();
+    void receiveCoordinates(QNetworkReply*);
 
 private:
     Ui::Widget        *ui;
     QGraphicsScene    *scene;     // Объявляем графическую сцену
     vector<Triangle*> ble;  // и треугольник
     vector<Circle*>   obj;
+    QNetworkAccessManager *manager;
+    QNetworkRequest   createRequest();
+    void              sendRequest();
 //    void repaint();
 };
 

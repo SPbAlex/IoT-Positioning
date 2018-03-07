@@ -50,18 +50,57 @@ Widget::Widget(QWidget *parent) :
 
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(updateCoordinates()));
-    timer->start(1000);
-//    manager = new QNetworkAccessManager(this);
+    timer->start(2000);
+    manager = new QNetworkAccessManager(this);
 //    connect(manager, SIGNAL(finished(QNetworkReply*)),
-//            this, SLOT(replyFinished(QNetworkReply*)));
+//            this, SLOT(receiveCoordinates(QNetworkReply*)));
+    QObject::connect(manager, &QNetworkAccessManager::finished,
+            this, [=](QNetworkReply *reply) {
+                if (reply->error()) {
+                    qDebug() << reply->errorString();
+                    return;
+                }
+                QString answer = reply->readAll();
+                QRegExp rx("(\d*\.\d*)");
+//                qDebug() << answer;
+                QStringList list;
+                int pos = 0;
+
+                while ((pos = rx.indexIn(answer, pos)) != -1) {
+                    list << rx.cap(1);
+                    pos += rx.matchedLength();
+                }
+                qDebug() << list;
+            }
+        );
 }
 
 void Widget::updateCoordinates() {
-//    manager->get(QNetworkRequest(QUrl("http://localhost:8000/get_coords")));
+    sendRequest();
     //    obj[0]->setPos(-10,-200);
     //    obj[1]->setPos(-170,-50);
     //    scene->update();
 }
+
+
+QNetworkRequest Widget::createRequest() {
+    QNetworkRequest request;
+    request.setUrl(QUrl("http://10.30.36.28:8000/get_coords/"));
+    request.setRawHeader("Content-Type","text/plain");
+    // здесь прописываются все необходимые заголовки запроса
+    return request;
+}
+
+void Widget::receiveCoordinates(QNetworkReply *reply) {
+    QByteArray data=reply->readAll();
+    qDebug() << data;
+}
+void Widget::sendRequest() {
+
+    QNetworkRequest request = createRequest();
+    manager->get(request);
+}
+
 Widget::~Widget()
 {
     delete ui;
