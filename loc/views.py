@@ -66,10 +66,5 @@ def coords(request):
         with open('data', 'r') as f:
             s = f.readline()
 
-<<<<<<< HEAD
-    return HttpResponse(s, content_type="text/plain", status=201)
-=======
-    print(s)
-
     return HttpResponse(s, content_type="text/plain", status=200)
->>>>>>> 1666b79b740bcfe904e7710ca92a8cef282c58f9
+    print(s)
