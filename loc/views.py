@@ -33,11 +33,11 @@ class AboutPageView(TemplateView):
 def vote(request):
     print('Hello')
     if request.method == 'POST':
-        print(request.POST['data'])
+        print(request.POST)
 
     # Beacons table
-    with open('data', 'w') as f:
-        f.write(trelaterate(3,4,5))
+#    with open('data', 'w') as f:
+#        f.write(trelaterate(3,4,5))
 
     return HttpResponse(status=201)
 
