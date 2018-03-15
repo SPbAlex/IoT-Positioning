@@ -1,12 +1,8 @@
-class Room(object):
-    def __init__(self):
-        beaconA = Beacon
-        beaconB = Beacon
-        beaconC = Beacon
-        beaconD = Beacon
+def get_beacons():
+    # id: (x, y)
+    beacons = {1717: (0.1,0.1),
+               303:  (0.11,5),
+               317:  (5.1,0.111),
+               1703: (5.11,5.1),}
 
-
-class Beacon(object):
-    def __init__(self):
-        x = 0
-        y = 0
+    return beacons
