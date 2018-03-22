@@ -33,24 +33,27 @@ def vote(request):
         data = [list(map(int, i.split(','))) for i in str_data.split(';')]
 
     # get distance from beacons
-    dists_raw = [0] * len(data)
-    beacs = [0] * len(data)
+    dists_raw = []
+    beacs = []
     for i in range(len(data)):
-        dists_raw[i] = get_distance(data[i][1], data[i][2])
-        beacs[i] = data[i][0]
+        if data[i][1] and data[i][2]:
+            dists_raw.append(get_distance(data[i][1], data[i][2]))
+            beacs.append(data[i][0])
 
     indces = sorted(range(len(dists_raw)), key=lambda k: dists_raw[k])
 
-    dists_3_best = [0] * 3
-    for i in range(len(dists_3_best)):
-        j = indces[i]
-        dists_3_best[i] = (beacs[j], dists_raw[j])
+    if len(beacs) >= 3:
+        dists_3_best = [0] * len(beacs)
+        for i in range(len(dists_3_best)):
+            j = indces[i]
+            dists_3_best[i] = (beacs[j], dists_raw[j])
 
-    # Beacons table
-    with open('data', 'w') as f:
-        f.write(str(trelaterate(dists_3_best)))
+        # Beacons table
+        with open('data', 'w') as f:
+            f.write(str(trelaterate(dists_3_best)))
 
-    return HttpResponse(status=201)
+        return HttpResponse(status=201)
+    return HttpResponse(status=400)
 
 
 @csrf_exempt

@@ -63,12 +63,15 @@ def trelaterate_old(dists_3_best):
 def get_distance(txPower, rssi):
 
     if rssi == 0:
-        return 0
+        return None
 
-    ratio = rssi * 1.0 / txPower
-    if ratio < 1:
-        return ratio**10
-    else:
-        accuracy = 0.89976 * ratio**7.7095 + 0.111
+    n = 4
+    d = 10**((txPower-rssi)/(10*n))
 
-    return accuracy
+    # ratio = rssi * 1.0 / txPower
+    # if ratio < 1:
+    #     return ratio**10
+    # else:
+    #     d = 0.89976 * ratio**7.7095 + 0.111
+
+    return d
